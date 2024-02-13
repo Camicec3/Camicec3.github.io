@@ -1,41 +1,41 @@
 ---
-title: "YOUR NAME" 
+title: "Cameron Caffarelli" 
 about:
   template: trestles  # jolla  trestles  solana  marquee  broadside
-  image: img/profile.png
+  image: img/WIM_2021206_16_19_17Pro.jpg
   image-width: 16em
   image-shape: round # rectangle  round  rounded
   
   links:
     - icon: linkedin
       text: LinkedIn
-      href: https://linkedin.com
+      href: https://www.linkedin.com/in/cameron-caffarelli-74957021a/
     - icon: instagram
       text: Instagram
-      href: https://instagram.com
+      href: https://www.instagram.com/cami4066/
     - icon: github
       text: GitHub
-      href: https://github.com
+      href: https://github.com/Camicec3/Camicec3.github.io
     - icon: file-earmark-pdf
       text: Resumé
-      href: https://GITHUB_USERNAME.github.io/resume-example.pdf
+      href: file:///C:/Users/caffa/OneDrive/Documents/Living%20Resume.pdf
     - icon: mailbox
       text: Email
-      href: mailto:YOUR_EMAIL@geneseo.edu
+      href: mailto:cec26@geneseo.edu
 
 ---
 
 
-Finley Malloc majors in Data Analytics at SUNY Geneseo. When not working on data analytics, Finley enjoys spending time unicycling and playing with her pet iguana.
+Hello! My name is Cameron Caffarelli. I am a junior at SUNY Geneseo with a major in Data Analytics. Here are a few fun facts about me! I have many hobbies including: hiking, skiing, writing poetry, and ceramics, etc. I also enjoy, baking/ cooking with my friends and gardening with my mom during the summer. My favorite color is red. I have one younger brother, and two dogs. Also, my family and I like to complete escape rooms together once a month. As you can see, I love to learn/try new things!
 
 ## Education
 
 State University of New York at Geneseo | Geneseo, NY <br>
-B.S. in Data Analytics | Aug 2022 - May 2026 <br>
-Minor in Business Administration 
+B.S. in Data Analytics | Jan 2022 - Dec 2024 <br>
+
 
 ## Experience
 
-Starbucks Analytics | Data Analyst Intern | May 2024 - Aug 2024
+T.J. Maxx | Sales Floor Associate | Nov 2022 - Feb 2024
 
 

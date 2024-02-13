@@ -3,12 +3,16 @@ project:
   output-dir: "."
 
 website:
-  title: "YOUR NAME"
+  title: "Cameron Caffarelli"
   navbar:
     pinned: true
     left:
       - text: Project
         href: project.qmd
+      - text: Python Data Analysis
+        menu:
+        - text: Python basics
+          href: basic-python-intro-ipynb
       - text: Blog
         href: blog-listing.qmd
   page-footer: 
@@ -17,11 +21,13 @@ website:
 format:
   html:
     theme: 
-      light: flatly
-      dark: darkly
+      light: sandstone
+      dark: vapor
     mainfont: system-ui; 
     highlight-style: atom-one
     css: styles.css
     toc: false
     include-after-body: target_blank.html
+    
+  
     
