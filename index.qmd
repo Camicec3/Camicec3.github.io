@@ -2,7 +2,7 @@
 title: "Cameron Caffarelli" 
 about:
   template: trestles  # jolla  trestles  solana  marquee  broadside
-  image: img/WIM_2021206_16_19_17Pro.jpg
+  image: img/profile.jpg
   image-width: 16em
   image-shape: round # rectangle  round  rounded
   

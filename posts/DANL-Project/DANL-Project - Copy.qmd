@@ -1,0 +1,38 @@
+---
+title: "DANL Project"
+author: Cameron Caffarelli
+format: html
+editor: visual
+---
+
+**Title: Unifying Environmental, Social, and Governance (ESG) Metrics with Financial Analysis - DANL Project**
+
+**Intro:**
+
+An ESG Score is a rating that combines all three elements specified in its name. Environmental means sustainability, Social means how society perceives said company and how the public/their consumers view its treatment of workers and other social issues/affairs, and lastly, Governance is all about how the company is run, such as a board of directors and the ethics of the company.
+
+This data will study the question of whether this score holds any significance for businesses/investors and consumers alike. Do the Environmental, Social, and Governance stats hold any value? Do they matter?
+
+**Questions:**
+
+[Q1:]{.underline}
+
+Is there sufficient evidence to prove people care about how companies and their choices affect the enviorment?
+
+[Q2:]{.underline}
+
+is there a strong correlation between a high ESG score and a company being a good investment long-term?
+
+**Significance:**
+
+Many things make this data significant to many different groups of people.
+
+In the business world, the ESG score could be a deciding factor in whether or not to have a partnership or deal with another company. It could also help investors make smarter long-term investments and motivate companies to be more environmentally minded and friendly.
+
+In the consumer world, this score helps environmentally conscious consumers make decisions on "where" to buy "what" and from "whom." It could also encourage boycotts of companies that refuse to change their ways.
+
+**References:**
+
+[https://www.onboardmeetings.com/blog/esg-risk/https://www.onboardmeetings.com/blog/esg-risk/](https://www.onboardmeetings.com/blog/esg-risk/)
+
+[https://www.diligent.com/resources/blog/esg-risk-scoreshttps](https://www.diligent.com/resources/blog/esg-risk-scores)

@@ -12,11 +12,13 @@ website:
       - text: Python Data Analysis
         menu:
         - text: Python basics
-          href: basic-python-intro-ipynb
+          href: basic-python-intro.ipynb
+        - text: Python basics with Pandas
+          href: danl-210-quarto-reticulate.qmd
       - text: Blog
         href: blog-listing.qmd
   page-footer: 
-    center: "Powered with GitHub and Quarto<br>© YOUR NAME, 2023"
+    center: "Powered with GitHub and Quarto<br>© Cameron Caffarelli, 2024"
 
 format:
   html:

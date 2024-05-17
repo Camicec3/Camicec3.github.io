@@ -21,27 +21,6 @@
     "text": "2.2 MPG and a Type of Cars\nThe following boxplot shows how the distribution of highway MPG (hwy) varies by a type of cars (class) 🚙 🚚 🚐.\n\nggplot(data = mpg) +\n  geom_boxplot(aes(x = class, y = hwy, fill = class),\n               show.legend = F) +\n  labs(x = \"Class\", y = \"Highway\\nMPG\")"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Cameron Caffarelli",
-    "section": "",
-    "text": "Hello! My name is Cameron Caffarelli. I am a junior at SUNY Geneseo with a major in Data Analytics. Here are a few fun facts about me! I have many hobbies including: hiking, skiing, writing poetry, and ceramics, etc. I also enjoy, baking/ cooking with my friends and gardening with my mom during the summer. My favorite color is red. I have one younger brother, and two dogs. Also, my family and I like to complete escape rooms together once a month. As you can see, I love to learn/try new things!"
-  },
-  {
-    "objectID": "index.html#education",
-    "href": "index.html#education",
-    "title": "Cameron Caffarelli",
-    "section": "Education",
-    "text": "Education\nState University of New York at Geneseo | Geneseo, NY  B.S. in Data Analytics | Jan 2022 - Dec 2024"
-  },
-  {
-    "objectID": "index.html#experience",
-    "href": "index.html#experience",
-    "title": "Cameron Caffarelli",
-    "section": "Experience",
-    "text": "Experience\nT.J. Maxx | Sales Floor Associate | Nov 2022 - Feb 2024"
-  },
-  {
     "objectID": "posts/starwars/starwars_df.html",
     "href": "posts/starwars/starwars_df.html",
     "title": "Starwars",
@@ -70,60 +49,74 @@
     "text": "This is a post with executable code with no space in the folder name.\n\n1 + 1\n\n[1] 2"
   },
   {
-    "objectID": "posts/welcome/index.html",
-    "href": "posts/welcome/index.html",
-    "title": "Welcome To My Blog",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Cameron Caffarelli",
     "section": "",
-    "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
+    "text": "Hello! My name is Cameron Caffarelli. I am a junior at SUNY Geneseo with a major in Data Analytics. Here are a few fun facts about me! I have many hobbies including: hiking, skiing, writing poetry, and ceramics, etc. I also enjoy, baking/ cooking with my friends and gardening with my mom during the summer. My favorite color is red. I have one younger brother, and two dogs. Also, my family and I like to complete escape rooms together once a month. As you can see, I love to learn/try new things!"
   },
   {
-    "objectID": "posts/beer-markets/beer-markets.html",
-    "href": "posts/beer-markets/beer-markets.html",
-    "title": "Beer Markets",
-    "section": "",
-    "text": "Let’s analyze the beer_data data:\nbeer_data &lt;- read_csv(\"https://bcdanl.github.io/data/beer_markets.csv\")"
+    "objectID": "index.html#education",
+    "href": "index.html#education",
+    "title": "Cameron Caffarelli",
+    "section": "Education",
+    "text": "Education\nState University of New York at Geneseo | Geneseo, NY  B.S. in Data Analytics | Jan 2022 - Dec 2024"
   },
   {
-    "objectID": "posts/beer-markets/beer-markets.html#variable-description-for-beer_data-data.frame",
-    "href": "posts/beer-markets/beer-markets.html#variable-description-for-beer_data-data.frame",
-    "title": "Beer Markets",
-    "section": "Variable Description for beer_data data.frame",
-    "text": "Variable Description for beer_data data.frame\nThe following describes the variables in the beer_data data.frame.\n\nhh: Household identifier\n_purchase_desc: Description of the purchase\nquantity: The quantity of beer purchased\nbrand: The brand of beer\ndollar_spent: The amount spent\nbeer_floz: Fluid ounces of beer\nprice_per_floz: Price per fluid ounce\ncontainer: Type of container\npromo: Whether the purchase was on promotion\nmarket: The market where the purchase was made\nDemographics: age, employment status, degree, class of worker (cow), race, and household information like microwave, dishwasher, tvcable, singlefamilyhome, and npeople (number of people in the household)"
-  },
-  {
-    "objectID": "posts/beer-markets/beer-markets.html#purchase-patterns",
-    "href": "posts/beer-markets/beer-markets.html#purchase-patterns",
-    "title": "Beer Markets",
-    "section": "Purchase Patterns",
-    "text": "Purchase Patterns\nWe’ll explore the purchase patterns in the dataset. This includes understanding the most popular brands, the average quantity purchased, and spending habits across different markets. Here are some specific analyses we can perform:\n\nCalculate the total quantity and spending for each brand.\nFind the average quantity purchased and average spending per purchase.\nCompare the total spending across different markets.\n\nI’ll begin with these analyses and create visualizations to help us understand the data better. Let’s start by calculating the total quantity and spending for each brand.\n\nimport pandas as pd\nimport matplotlib.pyplot as plt\nimport seaborn as sns\n\n# Reading the CSV file\nbeer_data = pd.read_csv(\"https://bcdanl.github.io/data/beer_markets.csv\")\n\n# Setting up the visualisation settings\nsns.set(style=\"whitegrid\")\n\n# Calculate total quantity and spending for each brand\nbrand_summary = beer_data.groupby('brand').agg({'quantity':'sum', 'dollar_spent':'sum'}).reset_index()\n\n# Sort by total quantity and spending\nbrand_summary_sorted_quantity = brand_summary.sort_values('quantity', ascending=False)\nbrand_summary_sorted_spent = brand_summary.sort_values('dollar_spent', ascending=False)\n\n\n# Plotting total quantity for each brand\nplt.figure(figsize=(10, 8))\nsns.barplot(x='quantity', y='brand', data=brand_summary_sorted_quantity, palette='viridis')\nplt.title('Total Quantity of Beer Purchased by Brand')\nplt.xlabel('Total Quantity')\nplt.ylabel('Brand')\nplt.show()\n\n\n\n# Plotting total spending for each brand\nplt.figure(figsize=(10, 8))\nsns.barplot(x='dollar_spent', y='brand', data=brand_summary_sorted_spent, palette='viridis')\nplt.title('Total Spending on Beer by Brand')\nplt.xlabel('Total Spending')\nplt.ylabel('Brand')\nplt.show()\n\n\n\n\nThe bar charts above display the total quantity of beer purchased and the total spending by brand. From the looks of it, certain brands dominate in terms of quantity sold and total spending, indicating their popularity.\nNow, let’s calculate the average quantity purchased and average spending per purchase. For this, we’ll consider each row in the dataset as a separate purchase and compute the averages accordingly.\n\n# Calculate average quantity purchased and average spending per purchase\naverage_purchase = beer_data.groupby('brand').agg({\n    'quantity': 'mean', \n    'dollar_spent': 'mean'\n}).reset_index()\n\n# Sort by average quantity and average spending\naverage_purchase_sorted_quantity = average_purchase.sort_values('quantity', ascending=False)\naverage_purchase_sorted_spent = average_purchase.sort_values('dollar_spent', ascending=False)\n\n# Plotting average quantity for each brand\nplt.figure(figsize=(10, 8))\nsns.barplot(x='quantity', y='brand', data=average_purchase_sorted_quantity, palette='viridis')\nplt.title('Average Quantity of Beer Purchased by Brand')\nplt.xlabel('Average Quantity')\nplt.ylabel('Brand')\nplt.show()\n\n\n\n# Plotting average spending for each brand\nplt.figure(figsize=(10, 8))\nsns.barplot(x='dollar_spent', y='brand', data=average_purchase_sorted_spent, palette='viridis')\nplt.title('Average Spending on Beer by Brand')\nplt.xlabel('Average Spending')\nplt.ylabel('Brand')\nplt.show()\n\n\n\n\nThe visualizations above depict the average quantity of beer purchased per brand and the average spending per brand. This shows which brands tend to be bought in larger quantities on average and which brands tend to have higher spending per purchase, which could be indicative of their price point or the purchase of premium products.\nNext, we’ll look at the total spending across different markets to see if there are any notable differences in spending habits geographically. To do this, we’ll sum up the spending in each market and visualize it.\n\n# Calculate total spending in each market\nmarket_spending_summary = beer_data.groupby('market').agg({'dollar_spent':'sum'}).reset_index()\n\n# Sort by total spending\nmarket_spending_summary_sorted = market_spending_summary.sort_values('dollar_spent', ascending=False)\n\n# Plotting total spending in each market\nplt.figure(figsize=(12, 10))\nsns.barplot(x='dollar_spent', y='market', data=market_spending_summary_sorted, palette='viridis')\nplt.title('Total Spending on Beer by Market')\nplt.xlabel('Total Spending')\nplt.ylabel('Market')\nplt.show()\n\n\n\n\nThe bar chart illustrates the total spending on beer by market, showcasing the differences in spending habits across various regions. Some markets have significantly higher spending, which could be due to a variety of factors including market size, consumer preferences, or economic factors.\nNow, let’s move on to the second analysis:"
-  },
-  {
-    "objectID": "posts/beer-markets/beer-markets.html#demographic-analysis",
-    "href": "posts/beer-markets/beer-markets.html#demographic-analysis",
-    "title": "Beer Markets",
-    "section": "Demographic Analysis",
-    "text": "Demographic Analysis\nWe will examine which demographics are buying what kind of beer and whether spending habits vary by demographics such as age, employment, and race. For this, we could look at:\n\nSpending by age group\nSpending by employment status\nSpending by race\n\nI’ll start by analyzing spending by age group.\n\n# Calculate total spending by age group\nage_group_spending = beer_data.groupby('age').agg({'dollar_spent':'sum'}).reset_index()\n\n# Sort by total spending\nage_group_spending_sorted = age_group_spending.sort_values('dollar_spent', ascending=False)\n\n# Plotting total spending by age group\nplt.figure(figsize=(10, 6))\nsns.barplot(x='dollar_spent', y='age', data=age_group_spending_sorted, palette='viridis')\nplt.title('Total Spending on Beer by Age Group')\nplt.xlabel('Total Spending')\nplt.ylabel('Age Group')\nplt.show()\n\n\n\n\nThe bar chart demonstrates the total spending on beer segmented by age group, highlighting which age groups spend the most on beer. It appears that certain age groups are more dominant in beer spending, which may align with the purchasing power or preferences of those groups.\nNext, we will examine spending by employment status.\n\n# Calculate total spending by employment status\nemployment_spending = beer_data.groupby('employment').agg({'dollar_spent':'sum'}).reset_index()\n\n# Sort by total spending\nemployment_spending_sorted = employment_spending.sort_values('dollar_spent', ascending=False)\n\n# Plotting total spending by employment status\nplt.figure(figsize=(10, 6))\nsns.barplot(x='dollar_spent', y='employment', data=employment_spending_sorted, palette='viridis')\nplt.title('Total Spending on Beer by Employment Status')\nplt.xlabel('Total Spending')\nplt.ylabel('Employment Status')\nplt.show()\n\n\n\n\nThe visualization shows the total spending on beer by employment status. We can see that certain employment groups, such as full-time workers, are spending more on beer, which might be related to their disposable income.\nFinally, let’s look at spending by race to complete the demographic analysis.\n\n# Calculate total spending by race\nrace_spending = beer_data.groupby('race').agg({'dollar_spent':'sum'}).reset_index()\n\n# Sort by total spending\nrace_spending_sorted = race_spending.sort_values('dollar_spent', ascending=False)\n\n# Plotting total spending by race\nplt.figure(figsize=(10, 6))\nsns.barplot(x='dollar_spent', y='race', data=race_spending_sorted, palette='viridis')\nplt.title('Total Spending on Beer by Race')\nplt.xlabel('Total Spending')\nplt.ylabel('Race')\nplt.show()\n\n\n\n\nThe bar chart above indicates the total spending on beer broken down by race, highlighting which racial groups account for the most beer spending within the dataset. This could reflect both the demographics of the regions where the data was collected and cultural preferences regarding beer.\nNow, let’s proceed to the third analysis:"
-  },
-  {
-    "objectID": "posts/beer-markets/beer-markets.html#price-sensitivity",
-    "href": "posts/beer-markets/beer-markets.html#price-sensitivity",
-    "title": "Beer Markets",
-    "section": "Price Sensitivity",
-    "text": "Price Sensitivity\nWe’ll look at the price per fluid ounce and see if there are any trends or correlations with the quantity purchased or the brand popularity. To do this, we’ll calculate the average price per fluid ounce for each brand and then visualize how this relates to the average quantity purchased and the total quantity purchased by brand.\nFirst, let’s calculate the average price per fluid ounce for each brand.\n\n# Calculate average price per fluid ounce for each brand\nbrand_price_sensitivity = beer_data.groupby('brand').agg({\n    'price_per_floz': 'mean', \n    'quantity': 'sum'\n}).reset_index()\n\n# Sort by price per fluid ounce\nbrand_price_sensitivity_sorted = brand_price_sensitivity.sort_values('price_per_floz', ascending=True)\n\n# Plotting average price per fluid ounce for each brand and the total quantity purchased\nfig, ax1 = plt.subplots(figsize=(12, 10))\n\ncolor = 'tab:red'\nax1.set_xlabel('Brand')\nax1.set_ylabel('Average Price per Fluid Ounce', color=color)\nax1.bar(brand_price_sensitivity_sorted['brand'], brand_price_sensitivity_sorted['price_per_floz'], color=color)\nax1.tick_params(axis='y', labelcolor=color)\nax1.set_xticklabels(brand_price_sensitivity_sorted['brand'], rotation=90)\n\nax2 = ax1.twinx()  # instantiate a second axes that shares the same x-axis\ncolor = 'tab:blue'\nax2.set_ylabel('Total Quantity Purchased', color=color)  # we already handled the x-label with ax1\nax2.plot(brand_price_sensitivity_sorted['brand'], brand_price_sensitivity_sorted['quantity'], color=color)\nax2.tick_params(axis='y', labelcolor=color)\n\nfig.tight_layout()  # otherwise the right y-label is slightly clipped\nplt.title('Average Price per Fluid Ounce & Total Quantity Purchased by Brand')\nplt.show()\n\n\n\n\nIn the visualization, we have a bar graph showing the average price per fluid ounce for each brand (in red) and a line graph showing the total quantity purchased for each brand (in blue). This gives us a sense of whether there’s a relationship between the price and the quantity purchased. The x-axis labels are quite compressed due to the number of brands, but we can still observe trends such as whether lower-priced beers tend to be purchased in larger quantities.\nLastly, let’s move to the fourth analysis:"
-  },
-  {
-    "objectID": "posts/beer-markets/beer-markets.html#promotional-impact",
-    "href": "posts/beer-markets/beer-markets.html#promotional-impact",
-    "title": "Beer Markets",
-    "section": "Promotional Impact",
-    "text": "Promotional Impact\nWe’ll assess the impact of promotions on the quantity of beer purchased. For this analysis, we can calculate the average quantity purchased with and without promotions and visualize the difference. We’ll do this for each brand to see which brands are most affected by promotions.\nLet’s begin this analysis by looking at the average quantity purchased with and without promotions for each brand.\n\n# Calculate average quantity purchased with and without promotions for each brand\npromo_impact = beer_data.groupby(['brand', 'promo']).agg({'quantity':'mean'}).reset_index()\n\n# Pivot the data to have promo and non-promo side by side for each brand\npromo_impact_pivot = promo_impact.pivot(index='brand', columns='promo', values='quantity').reset_index()\npromo_impact_pivot.columns = ['brand', 'non_promo', 'promo']\n\n# Calculate the difference in average quantity purchased between promo and non-promo\npromo_impact_pivot['promo_impact'] = promo_impact_pivot['promo'] - promo_impact_pivot['non_promo']\n\n# Sort by the impact of promo\npromo_impact_pivot_sorted = promo_impact_pivot.sort_values('promo_impact', ascending=False)\n\n# Plotting the difference in average quantity purchased between promo and non-promo for each brand\nplt.figure(figsize=(12, 10))\nsns.barplot(x='promo_impact', y='brand', data=promo_impact_pivot_sorted, palette='viridis')\nplt.title('Impact of Promotions on Average Quantity Purchased by Brand')\nplt.xlabel('Difference in Average Quantity Purchased (Promo - Non-Promo)')\nplt.ylabel('Brand')\nplt.show()\n\n\n\n\nThe bar chart illustrates the impact of promotions on the average quantity of beer purchased by brand. A positive value indicates that, on average, more beer is purchased when there is a promotion compared to when there isn’t. Some brands appear to be significantly more influenced by promotions, with customers buying more when the products are on sale or promotion.\nThis comprehensive analysis has provided insights into purchase patterns, demographic preferences, price sensitivity, and the impact of promotions on beer purchases."
+    "objectID": "index.html#experience",
+    "href": "index.html#experience",
+    "title": "Cameron Caffarelli",
+    "section": "Experience",
+    "text": "Experience\nT.J. Maxx | Sales Floor Associate | Nov 2022 - Feb 2024"
   },
   {
     "objectID": "blog-listing.html",
     "href": "blog-listing.html",
     "title": "Insightful Analytics",
     "section": "",
-    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n  \n\n\n\n\nBeer Markets\n\n\n\n\n\n\n\n\n\nNov 2, 2023\n\n\nByeong-Hak Choe\n\n\n9 min\n\n\n\n\n\n\n  \n\n\n\n\nStarwars\n\n\n\n\n\n\n\n\n\nOct 30, 2023\n\n\nYour Name\n\n\n3 min\n\n\n\n\n\n\n  \n\n\n\n\nPost With Code\n\n\n\n\n\n\n\n\n\nOct 30, 2023\n\n\nYOUR NAME\n\n\n1 min\n\n\n\n\n\n\n  \n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\n\n\nOct 27, 2023\n\n\nYOUR NAME\n\n\n1 min\n\n\n\n\n\n\nNo matching items"
+    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n  \n\n\n\n\nDANL Project\n\n\n\n\n\n\n\n\n\nCameron Caffarelli\n\n\n2 min\n\n\n\n\n\n\n  \n\n\n\n\nPython Basics\n\n\n\n\n\n\n\n\n\nFeb 13, 2024\n\n\nCameron Caffarelli\n\n\n1 min\n\n\n\n\n\n\n  \n\n\n\n\nBeer Markets\n\n\n\n\n\n\n\n\n\nNov 2, 2023\n\n\nByeong-Hak Choe\n\n\n9 min\n\n\n\n\n\n\n  \n\n\n\n\nStarwars\n\n\n\n\n\n\n\n\n\nOct 30, 2023\n\n\nYour Name\n\n\n3 min\n\n\n\n\n\n\n  \n\n\n\n\nPost With Code\n\n\n\n\n\n\n\n\n\nOct 30, 2023\n\n\nYOUR NAME\n\n\n1 min\n\n\n\n\n\n\n  \n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\n\n\nOct 27, 2023\n\n\nYOUR NAME\n\n\n1 min\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "basic-python-intro.html",
+    "href": "basic-python-intro.html",
+    "title": "Introduction to Python",
+    "section": "",
+    "text": "Python is a high-level, interpreted programming language. This is a simple Python code:\n\nprint('Hello, World!')"
+  },
+  {
+    "objectID": "basic-python-intro.html#what-is-python",
+    "href": "basic-python-intro.html#what-is-python",
+    "title": "Introduction to Python",
+    "section": "",
+    "text": "Python is a high-level, interpreted programming language. This is a simple Python code:\n\nprint('Hello, World!')"
+  },
+  {
+    "objectID": "basic-python-intro.html#variables-and-data-types",
+    "href": "basic-python-intro.html#variables-and-data-types",
+    "title": "Introduction to Python",
+    "section": "Variables and Data Types",
+    "text": "Variables and Data Types\nIn Python, variables can store data of different types without explicitly declaring the type.\nFor example:\n\ninteger_variable = 10\nstring_variable = 'Hello'\nfloat_variable = 10.5\n\nfloat_variable\n\n10.5"
+  },
+  {
+    "objectID": "basic-python-intro.html#control-structures",
+    "href": "basic-python-intro.html#control-structures",
+    "title": "Introduction to Python",
+    "section": "Control Structures",
+    "text": "Control Structures\nPython supports the usual logical conditions from mathematics:\n\n# Equals: a == b\n# Not Equals: a != b\n# Less than: a &lt; b\n# Less than or equal to: a &lt;= b\n# Greater than: a &gt; b\n# Greater than or equal to: a &gt;= b\n\nThese conditions can be used in several ways, most commonly in ‘if statements’ and loops.\n\n# if statement:\nif 5 &gt; 2:\n    print('Five is greater than two!')"
+  },
+  {
+    "objectID": "basic-python-intro.html#functions",
+    "href": "basic-python-intro.html#functions",
+    "title": "Introduction to Python",
+    "section": "Functions",
+    "text": "Functions\nA function is a block of code which only runs when it is called.\nYou can pass data, known as parameters, into a function.\nA function can return data as a result.\n\n# Defining a function:\ndef my_function():\n    print('Hello from a function')\n\n# Calling a function:\nmy_function()"
+  },
+  {
+    "objectID": "basic-python-intro.html#lists-and-dictionaries",
+    "href": "basic-python-intro.html#lists-and-dictionaries",
+    "title": "Introduction to Python",
+    "section": "Lists and Dictionaries",
+    "text": "Lists and Dictionaries\nA list is a collection which is ordered and changeable.\nA dictionary is a collection which is unordered, changeable and indexed.\n\n# List example:\nmy_list = ['apple', 'banana', 'cherry']\n\n# Dictionary example:\nmy_dict = {'name': 'John', 'age': 36}"
   },
   {
     "objectID": "danl-210-quarto-reticulate.html",
@@ -173,5 +166,110 @@
     "title": "Pandas Basics - Orange Juice Sales",
     "section": "Python-R Interaction",
     "text": "Python-R Interaction\nBelow is using Python’s DataFrame oj to visualize using R’s ggplot\n\nlibrary(tidyverse)\n\nWarning: package 'tidyverse' was built under R version 4.1.3\n\n\nWarning: package 'tibble' was built under R version 4.1.3\n\n\nWarning: package 'tidyr' was built under R version 4.1.3\n\n\nWarning: package 'readr' was built under R version 4.1.3\n\n\nWarning: package 'purrr' was built under R version 4.1.3\n\n\nWarning: package 'dplyr' was built under R version 4.1.3\n\n\nWarning: package 'stringr' was built under R version 4.1.3\n\n\nWarning: package 'forcats' was built under R version 4.1.3\n\n\nWarning: package 'lubridate' was built under R version 4.1.3\n\n\n-- Attaching core tidyverse packages ------------------------ tidyverse 2.0.0 --\nv dplyr     1.1.2     v readr     2.1.4\nv forcats   1.0.0     v stringr   1.5.0\nv ggplot2   3.4.3     v tibble    3.2.1\nv lubridate 1.9.2     v tidyr     1.3.0\nv purrr     1.0.1     \n-- Conflicts ------------------------------------------ tidyverse_conflicts() --\nx dplyr::filter() masks stats::filter()\nx dplyr::lag()    masks stats::lag()\ni Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\n# Access the Python pandas DataFrame\noj &lt;- py$oj\n\n# Plot using ggplot2\nggplot(oj, aes(x = log(sales), y = log(price), \n               color = brand)) +\n  geom_point(alpha = .25) +\n  geom_smooth(method = lm) +\n  theme_minimal()\n\n`geom_smooth()` using formula = 'y ~ x'\n\n\n\n\n\n\nInteractive DataFrame with R’s DT Package\n\n\n\n\n\n\n\nIn *.ipynb on Google Colab, we can use itables or just Google Colab’s default to print DataFrame.\n\n# !pip install itables\nfrom itables import init_notebook_mode, show\ninit_notebook_mode(all_interactive=False)\n\noj = pd.read_csv('https://bcdanl.github.io/data/dominick_oj.csv')\nshow(oj)"
+  },
+  {
+    "objectID": "posts/beer-markets/beer-markets.html",
+    "href": "posts/beer-markets/beer-markets.html",
+    "title": "Beer Markets",
+    "section": "",
+    "text": "Let’s analyze the beer_data data:\nbeer_data &lt;- read_csv(\"https://bcdanl.github.io/data/beer_markets.csv\")"
+  },
+  {
+    "objectID": "posts/beer-markets/beer-markets.html#variable-description-for-beer_data-data.frame",
+    "href": "posts/beer-markets/beer-markets.html#variable-description-for-beer_data-data.frame",
+    "title": "Beer Markets",
+    "section": "Variable Description for beer_data data.frame",
+    "text": "Variable Description for beer_data data.frame\nThe following describes the variables in the beer_data data.frame.\n\nhh: Household identifier\n_purchase_desc: Description of the purchase\nquantity: The quantity of beer purchased\nbrand: The brand of beer\ndollar_spent: The amount spent\nbeer_floz: Fluid ounces of beer\nprice_per_floz: Price per fluid ounce\ncontainer: Type of container\npromo: Whether the purchase was on promotion\nmarket: The market where the purchase was made\nDemographics: age, employment status, degree, class of worker (cow), race, and household information like microwave, dishwasher, tvcable, singlefamilyhome, and npeople (number of people in the household)"
+  },
+  {
+    "objectID": "posts/beer-markets/beer-markets.html#purchase-patterns",
+    "href": "posts/beer-markets/beer-markets.html#purchase-patterns",
+    "title": "Beer Markets",
+    "section": "Purchase Patterns",
+    "text": "Purchase Patterns\nWe’ll explore the purchase patterns in the dataset. This includes understanding the most popular brands, the average quantity purchased, and spending habits across different markets. Here are some specific analyses we can perform:\n\nCalculate the total quantity and spending for each brand.\nFind the average quantity purchased and average spending per purchase.\nCompare the total spending across different markets.\n\nI’ll begin with these analyses and create visualizations to help us understand the data better. Let’s start by calculating the total quantity and spending for each brand.\n\nimport pandas as pd\nimport matplotlib.pyplot as plt\nimport seaborn as sns\n\n# Reading the CSV file\nbeer_data = pd.read_csv(\"https://bcdanl.github.io/data/beer_markets.csv\")\n\n# Setting up the visualisation settings\nsns.set(style=\"whitegrid\")\n\n# Calculate total quantity and spending for each brand\nbrand_summary = beer_data.groupby('brand').agg({'quantity':'sum', 'dollar_spent':'sum'}).reset_index()\n\n# Sort by total quantity and spending\nbrand_summary_sorted_quantity = brand_summary.sort_values('quantity', ascending=False)\nbrand_summary_sorted_spent = brand_summary.sort_values('dollar_spent', ascending=False)\n\n\n# Plotting total quantity for each brand\nplt.figure(figsize=(10, 8))\nsns.barplot(x='quantity', y='brand', data=brand_summary_sorted_quantity, palette='viridis')\nplt.title('Total Quantity of Beer Purchased by Brand')\nplt.xlabel('Total Quantity')\nplt.ylabel('Brand')\nplt.show()\n\n\n\n# Plotting total spending for each brand\nplt.figure(figsize=(10, 8))\nsns.barplot(x='dollar_spent', y='brand', data=brand_summary_sorted_spent, palette='viridis')\nplt.title('Total Spending on Beer by Brand')\nplt.xlabel('Total Spending')\nplt.ylabel('Brand')\nplt.show()\n\n\n\n\nThe bar charts above display the total quantity of beer purchased and the total spending by brand. From the looks of it, certain brands dominate in terms of quantity sold and total spending, indicating their popularity.\nNow, let’s calculate the average quantity purchased and average spending per purchase. For this, we’ll consider each row in the dataset as a separate purchase and compute the averages accordingly.\n\n# Calculate average quantity purchased and average spending per purchase\naverage_purchase = beer_data.groupby('brand').agg({\n    'quantity': 'mean', \n    'dollar_spent': 'mean'\n}).reset_index()\n\n# Sort by average quantity and average spending\naverage_purchase_sorted_quantity = average_purchase.sort_values('quantity', ascending=False)\naverage_purchase_sorted_spent = average_purchase.sort_values('dollar_spent', ascending=False)\n\n# Plotting average quantity for each brand\nplt.figure(figsize=(10, 8))\nsns.barplot(x='quantity', y='brand', data=average_purchase_sorted_quantity, palette='viridis')\nplt.title('Average Quantity of Beer Purchased by Brand')\nplt.xlabel('Average Quantity')\nplt.ylabel('Brand')\nplt.show()\n\n\n\n# Plotting average spending for each brand\nplt.figure(figsize=(10, 8))\nsns.barplot(x='dollar_spent', y='brand', data=average_purchase_sorted_spent, palette='viridis')\nplt.title('Average Spending on Beer by Brand')\nplt.xlabel('Average Spending')\nplt.ylabel('Brand')\nplt.show()\n\n\n\n\nThe visualizations above depict the average quantity of beer purchased per brand and the average spending per brand. This shows which brands tend to be bought in larger quantities on average and which brands tend to have higher spending per purchase, which could be indicative of their price point or the purchase of premium products.\nNext, we’ll look at the total spending across different markets to see if there are any notable differences in spending habits geographically. To do this, we’ll sum up the spending in each market and visualize it.\n\n# Calculate total spending in each market\nmarket_spending_summary = beer_data.groupby('market').agg({'dollar_spent':'sum'}).reset_index()\n\n# Sort by total spending\nmarket_spending_summary_sorted = market_spending_summary.sort_values('dollar_spent', ascending=False)\n\n# Plotting total spending in each market\nplt.figure(figsize=(12, 10))\nsns.barplot(x='dollar_spent', y='market', data=market_spending_summary_sorted, palette='viridis')\nplt.title('Total Spending on Beer by Market')\nplt.xlabel('Total Spending')\nplt.ylabel('Market')\nplt.show()\n\n\n\n\nThe bar chart illustrates the total spending on beer by market, showcasing the differences in spending habits across various regions. Some markets have significantly higher spending, which could be due to a variety of factors including market size, consumer preferences, or economic factors.\nNow, let’s move on to the second analysis:"
+  },
+  {
+    "objectID": "posts/beer-markets/beer-markets.html#demographic-analysis",
+    "href": "posts/beer-markets/beer-markets.html#demographic-analysis",
+    "title": "Beer Markets",
+    "section": "Demographic Analysis",
+    "text": "Demographic Analysis\nWe will examine which demographics are buying what kind of beer and whether spending habits vary by demographics such as age, employment, and race. For this, we could look at:\n\nSpending by age group\nSpending by employment status\nSpending by race\n\nI’ll start by analyzing spending by age group.\n\n# Calculate total spending by age group\nage_group_spending = beer_data.groupby('age').agg({'dollar_spent':'sum'}).reset_index()\n\n# Sort by total spending\nage_group_spending_sorted = age_group_spending.sort_values('dollar_spent', ascending=False)\n\n# Plotting total spending by age group\nplt.figure(figsize=(10, 6))\nsns.barplot(x='dollar_spent', y='age', data=age_group_spending_sorted, palette='viridis')\nplt.title('Total Spending on Beer by Age Group')\nplt.xlabel('Total Spending')\nplt.ylabel('Age Group')\nplt.show()\n\n\n\n\nThe bar chart demonstrates the total spending on beer segmented by age group, highlighting which age groups spend the most on beer. It appears that certain age groups are more dominant in beer spending, which may align with the purchasing power or preferences of those groups.\nNext, we will examine spending by employment status.\n\n# Calculate total spending by employment status\nemployment_spending = beer_data.groupby('employment').agg({'dollar_spent':'sum'}).reset_index()\n\n# Sort by total spending\nemployment_spending_sorted = employment_spending.sort_values('dollar_spent', ascending=False)\n\n# Plotting total spending by employment status\nplt.figure(figsize=(10, 6))\nsns.barplot(x='dollar_spent', y='employment', data=employment_spending_sorted, palette='viridis')\nplt.title('Total Spending on Beer by Employment Status')\nplt.xlabel('Total Spending')\nplt.ylabel('Employment Status')\nplt.show()\n\n\n\n\nThe visualization shows the total spending on beer by employment status. We can see that certain employment groups, such as full-time workers, are spending more on beer, which might be related to their disposable income.\nFinally, let’s look at spending by race to complete the demographic analysis.\n\n# Calculate total spending by race\nrace_spending = beer_data.groupby('race').agg({'dollar_spent':'sum'}).reset_index()\n\n# Sort by total spending\nrace_spending_sorted = race_spending.sort_values('dollar_spent', ascending=False)\n\n# Plotting total spending by race\nplt.figure(figsize=(10, 6))\nsns.barplot(x='dollar_spent', y='race', data=race_spending_sorted, palette='viridis')\nplt.title('Total Spending on Beer by Race')\nplt.xlabel('Total Spending')\nplt.ylabel('Race')\nplt.show()\n\n\n\n\nThe bar chart above indicates the total spending on beer broken down by race, highlighting which racial groups account for the most beer spending within the dataset. This could reflect both the demographics of the regions where the data was collected and cultural preferences regarding beer.\nNow, let’s proceed to the third analysis:"
+  },
+  {
+    "objectID": "posts/beer-markets/beer-markets.html#price-sensitivity",
+    "href": "posts/beer-markets/beer-markets.html#price-sensitivity",
+    "title": "Beer Markets",
+    "section": "Price Sensitivity",
+    "text": "Price Sensitivity\nWe’ll look at the price per fluid ounce and see if there are any trends or correlations with the quantity purchased or the brand popularity. To do this, we’ll calculate the average price per fluid ounce for each brand and then visualize how this relates to the average quantity purchased and the total quantity purchased by brand.\nFirst, let’s calculate the average price per fluid ounce for each brand.\n\n# Calculate average price per fluid ounce for each brand\nbrand_price_sensitivity = beer_data.groupby('brand').agg({\n    'price_per_floz': 'mean', \n    'quantity': 'sum'\n}).reset_index()\n\n# Sort by price per fluid ounce\nbrand_price_sensitivity_sorted = brand_price_sensitivity.sort_values('price_per_floz', ascending=True)\n\n# Plotting average price per fluid ounce for each brand and the total quantity purchased\nfig, ax1 = plt.subplots(figsize=(12, 10))\n\ncolor = 'tab:red'\nax1.set_xlabel('Brand')\nax1.set_ylabel('Average Price per Fluid Ounce', color=color)\nax1.bar(brand_price_sensitivity_sorted['brand'], brand_price_sensitivity_sorted['price_per_floz'], color=color)\nax1.tick_params(axis='y', labelcolor=color)\nax1.set_xticklabels(brand_price_sensitivity_sorted['brand'], rotation=90)\n\nax2 = ax1.twinx()  # instantiate a second axes that shares the same x-axis\ncolor = 'tab:blue'\nax2.set_ylabel('Total Quantity Purchased', color=color)  # we already handled the x-label with ax1\nax2.plot(brand_price_sensitivity_sorted['brand'], brand_price_sensitivity_sorted['quantity'], color=color)\nax2.tick_params(axis='y', labelcolor=color)\n\nfig.tight_layout()  # otherwise the right y-label is slightly clipped\nplt.title('Average Price per Fluid Ounce & Total Quantity Purchased by Brand')\nplt.show()\n\n\n\n\nIn the visualization, we have a bar graph showing the average price per fluid ounce for each brand (in red) and a line graph showing the total quantity purchased for each brand (in blue). This gives us a sense of whether there’s a relationship between the price and the quantity purchased. The x-axis labels are quite compressed due to the number of brands, but we can still observe trends such as whether lower-priced beers tend to be purchased in larger quantities.\nLastly, let’s move to the fourth analysis:"
+  },
+  {
+    "objectID": "posts/beer-markets/beer-markets.html#promotional-impact",
+    "href": "posts/beer-markets/beer-markets.html#promotional-impact",
+    "title": "Beer Markets",
+    "section": "Promotional Impact",
+    "text": "Promotional Impact\nWe’ll assess the impact of promotions on the quantity of beer purchased. For this analysis, we can calculate the average quantity purchased with and without promotions and visualize the difference. We’ll do this for each brand to see which brands are most affected by promotions.\nLet’s begin this analysis by looking at the average quantity purchased with and without promotions for each brand.\n\n# Calculate average quantity purchased with and without promotions for each brand\npromo_impact = beer_data.groupby(['brand', 'promo']).agg({'quantity':'mean'}).reset_index()\n\n# Pivot the data to have promo and non-promo side by side for each brand\npromo_impact_pivot = promo_impact.pivot(index='brand', columns='promo', values='quantity').reset_index()\npromo_impact_pivot.columns = ['brand', 'non_promo', 'promo']\n\n# Calculate the difference in average quantity purchased between promo and non-promo\npromo_impact_pivot['promo_impact'] = promo_impact_pivot['promo'] - promo_impact_pivot['non_promo']\n\n# Sort by the impact of promo\npromo_impact_pivot_sorted = promo_impact_pivot.sort_values('promo_impact', ascending=False)\n\n# Plotting the difference in average quantity purchased between promo and non-promo for each brand\nplt.figure(figsize=(12, 10))\nsns.barplot(x='promo_impact', y='brand', data=promo_impact_pivot_sorted, palette='viridis')\nplt.title('Impact of Promotions on Average Quantity Purchased by Brand')\nplt.xlabel('Difference in Average Quantity Purchased (Promo - Non-Promo)')\nplt.ylabel('Brand')\nplt.show()\n\n\n\n\nThe bar chart illustrates the impact of promotions on the average quantity of beer purchased by brand. A positive value indicates that, on average, more beer is purchased when there is a promotion compared to when there isn’t. Some brands appear to be significantly more influenced by promotions, with customers buying more when the products are on sale or promotion.\nThis comprehensive analysis has provided insights into purchase patterns, demographic preferences, price sensitivity, and the impact of promotions on beer purchases."
+  },
+  {
+    "objectID": "posts/py-basics/blog_python_basics.html",
+    "href": "posts/py-basics/blog_python_basics.html",
+    "title": "Python Basics",
+    "section": "",
+    "text": "Python is a high-level, interpreted programming language. This is a simple Python code:\n\nprint('Hello, World!')\n\n\n\n\nIn Python, variables can store data of different types without explicitly declaring the type.\nFor example:\n\ninteger_variable = 10\nstring_variable = 'Hello'\nfloat_variable = 10.5\n\nfloat_variable\n\n10.5\n\n\n\n\n\nPython supports the usual logical conditions from mathematics:\n\n# Equals: a == b\n# Not Equals: a != b\n# Less than: a &lt; b\n# Less than or equal to: a &lt;= b\n# Greater than: a &gt; b\n# Greater than or equal to: a &gt;= b\n\nThese conditions can be used in several ways, most commonly in ‘if statements’ and loops.\n\n# if statement:\nif 5 &gt; 2:\n    print('Five is greater than two!')\n\n\n\n\nA function is a block of code which only runs when it is called.\nYou can pass data, known as parameters, into a function.\nA function can return data as a result.\n\n# Defining a function:\ndef my_function():\n    print('Hello from a function')\n\n# Calling a function:\nmy_function()\n\n\n\n\nA list is a collection which is ordered and changeable.\nA dictionary is a collection which is unordered, changeable and indexed.\n\n# List example:\nmy_list = ['apple', 'banana', 'cherry']\nmy_list\n\n['apple', 'banana', 'cherry']\n\n\n\n# Dictionary example:\nmy_dict = {'name': 'John', 'age': 36}\nmy_dict\n\n{'name': 'John', 'age': 36}"
+  },
+  {
+    "objectID": "posts/py-basics/blog_python_basics.html#what-is-python",
+    "href": "posts/py-basics/blog_python_basics.html#what-is-python",
+    "title": "Python Basics",
+    "section": "",
+    "text": "Python is a high-level, interpreted programming language. This is a simple Python code:\n\nprint('Hello, World!')"
+  },
+  {
+    "objectID": "posts/py-basics/blog_python_basics.html#variables-and-data-types",
+    "href": "posts/py-basics/blog_python_basics.html#variables-and-data-types",
+    "title": "Python Basics",
+    "section": "",
+    "text": "In Python, variables can store data of different types without explicitly declaring the type.\nFor example:\n\ninteger_variable = 10\nstring_variable = 'Hello'\nfloat_variable = 10.5\n\nfloat_variable\n\n10.5"
+  },
+  {
+    "objectID": "posts/py-basics/blog_python_basics.html#control-structures",
+    "href": "posts/py-basics/blog_python_basics.html#control-structures",
+    "title": "Python Basics",
+    "section": "",
+    "text": "Python supports the usual logical conditions from mathematics:\n\n# Equals: a == b\n# Not Equals: a != b\n# Less than: a &lt; b\n# Less than or equal to: a &lt;= b\n# Greater than: a &gt; b\n# Greater than or equal to: a &gt;= b\n\nThese conditions can be used in several ways, most commonly in ‘if statements’ and loops.\n\n# if statement:\nif 5 &gt; 2:\n    print('Five is greater than two!')"
+  },
+  {
+    "objectID": "posts/py-basics/blog_python_basics.html#functions",
+    "href": "posts/py-basics/blog_python_basics.html#functions",
+    "title": "Python Basics",
+    "section": "",
+    "text": "A function is a block of code which only runs when it is called.\nYou can pass data, known as parameters, into a function.\nA function can return data as a result.\n\n# Defining a function:\ndef my_function():\n    print('Hello from a function')\n\n# Calling a function:\nmy_function()"
+  },
+  {
+    "objectID": "posts/py-basics/blog_python_basics.html#lists-and-dictionaries",
+    "href": "posts/py-basics/blog_python_basics.html#lists-and-dictionaries",
+    "title": "Python Basics",
+    "section": "",
+    "text": "A list is a collection which is ordered and changeable.\nA dictionary is a collection which is unordered, changeable and indexed.\n\n# List example:\nmy_list = ['apple', 'banana', 'cherry']\nmy_list\n\n['apple', 'banana', 'cherry']\n\n\n\n# Dictionary example:\nmy_dict = {'name': 'John', 'age': 36}\nmy_dict\n\n{'name': 'John', 'age': 36}"
+  },
+  {
+    "objectID": "posts/welcome/index.html",
+    "href": "posts/welcome/index.html",
+    "title": "Welcome To My Blog",
+    "section": "",
+    "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
+  },
+  {
+    "objectID": "DANL-Project.html",
+    "href": "DANL-Project.html",
+    "title": "DANL Project",
+    "section": "",
+    "text": "Title: Unifying Environmental, Social, and Governance (ESG) Metrics with Financial Analysis - DANL Project\nIntro:\nAn ESG Score is a rating that combines all three elements specified in its name. Environmental means sustainability, Social means how society perceives said company and how the public/their consumers view its treatment of workers and other social issues/affairs, and lastly, Governance is all about how the company is run, such as a board of directors and the ethics of the company.\nThis data will study the question of whether this score holds any significance for businesses/investors and consumers alike. Do the Environmental, Social, and Governance stats hold any value? Do they matter?\nQuestions:\nQ1:\nIs there sufficient evidence to prove people care about how companies and their choices affect the enviorment?\nQ2:\nis there a strong correlation between a high ESG score and a company being a good investment long-term?\nSignificance:\nMany things make this data significant to many different groups of people.\nIn the business world, the ESG score could be a deciding factor in whether or not to have a partnership or deal with another company. It could also help investors make smarter long-term investments and motivate companies to be more environmentally minded and friendly.\nIn the consumer world, this score helps environmentally conscious consumers make decisions on “where” to buy “what” and from “whom.” It could also encourage boycotts of companies that refuse to change their ways.\nReferences:\nhttps://www.onboardmeetings.com/blog/esg-risk/https://www.onboardmeetings.com/blog/esg-risk/\nhttps://www.diligent.com/resources/blog/esg-risk-scoreshttps"
+  },
+  {
+    "objectID": "posts/DANL-Project/DANL-Project - Copy.html",
+    "href": "posts/DANL-Project/DANL-Project - Copy.html",
+    "title": "DANL Project",
+    "section": "",
+    "text": "Title: Unifying Environmental, Social, and Governance (ESG) Metrics with Financial Analysis - DANL Project\nIntro:\nAn ESG Score is a rating that combines all three elements specified in its name. Environmental means sustainability, Social means how society perceives said company and how the public/their consumers view its treatment of workers and other social issues/affairs, and lastly, Governance is all about how the company is run, such as a board of directors and the ethics of the company.\nThis data will study the question of whether this score holds any significance for businesses/investors and consumers alike. Do the Environmental, Social, and Governance stats hold any value? Do they matter?\nQuestions:\nQ1:\nIs there sufficient evidence to prove people care about how companies and their choices affect the enviorment?\nQ2:\nis there a strong correlation between a high ESG score and a company being a good investment long-term?\nSignificance:\nMany things make this data significant to many different groups of people.\nIn the business world, the ESG score could be a deciding factor in whether or not to have a partnership or deal with another company. It could also help investors make smarter long-term investments and motivate companies to be more environmentally minded and friendly.\nIn the consumer world, this score helps environmentally conscious consumers make decisions on “where” to buy “what” and from “whom.” It could also encourage boycotts of companies that refuse to change their ways.\nReferences:\nhttps://www.onboardmeetings.com/blog/esg-risk/https://www.onboardmeetings.com/blog/esg-risk/\nhttps://www.diligent.com/resources/blog/esg-risk-scoreshttps"
   }
 ]
