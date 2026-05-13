@@ -1,0 +1,294 @@
+---
+title: "danl"
+editor: visual
+jupyter: python3
+---
+
+```         
+```
+
+```{r}
+
+# Load libraries
+library(tidyverse)
+library(sf)
+library(socviz)
+library(scales)
+
+# Load election data
+election_panel <- read_csv(
+  "https://bcdanl.github.io/data/election_panel_2000_2024.csv"
+)
+
+# Load county geometries
+counties <- socviz::county_map |>
+  st_as_sf()
+
+# Join election data to map
+map_data <- counties |>
+  left_join(election_panel, by = c("id" = "id"))
+
+# Plot
+ggplot(map_data) +
+  geom_sf(aes(fill = pct_DEMOCRAT), color = NA) +
+  
+  facet_wrap(~year, ncol = 3) +
+  
+  scale_fill_gradientn(
+    colors = c("#FFFFFF", "grey80", "#81ABD9", "#211f82"),
+    values = scales::rescale(c(0, 0.25, 0.5, 1)),
+    name = "Percent Democrat",
+    labels = percent_format(scale = 1)
+  ) +
+  
+  labs(
+    title = "U.S. Presidential Elections, 2000–2024",
+    subtitle = "Votes toward Democratic Presidential Candidates"
+  ) +
+  
+  theme_void() +
+  
+  theme(
+    strip.background = element_rect(fill = "#6C8EBF", color = NA),
+    strip.text = element_text(color = "black", face = "bold"),
+    
+    plot.title = element_text(size = 18, face = "bold"),
+    plot.subtitle = element_text(size = 12),
+    
+    legend.position = "bottom"
+  )
+
+
+
+```
+
+```{r}
+library(tidyverse)
+library(sf)
+library(tigris)
+library(scales)
+library(ggthemes)
+library(hrbrthemes)
+library(rmarkdown)
+library(socviz)
+
+# Load data
+election_panel <- read_csv(
+  "https://bcdanl.github.io/data/election_panel_2000_2024.csv"
+)
+
+# County map data
+county_data <- socviz::county_map
+
+# Join data
+map_data <- county_data %>%
+  left_join(election_panel, by = c("fips" = "county_fips"))
+
+# Plot
+ggplot(map_data, aes(long, lat, group = group, fill = dem_share)) +
+  geom_polygon(color = NA) +
+  
+  # Facet by year
+  facet_wrap(~year, ncol = 3) +
+  
+  # Your exact colors (continuous gradient)
+  scale_fill_gradientn(
+    colors = c("#FFFFFF", "#211f82", "grey80", "#81ABD9"),
+    na.value = "grey80"
+  ) +
+  
+  coord_quickmap() +
+  
+  labs(
+    title = "U.S. Presidential Elections, 2000–2024",
+    subtitle = "Votes toward Democratic Presidential Candidates",
+    fill = "Percent Democrat"
+  ) +
+  
+  theme_void() +
+  theme(
+    strip.text = element_text(face = "bold", size = 12),
+    plot.title = element_text(face = "bold", size = 16),
+    plot.subtitle = element_text(size = 12)
+  )
+```
+
+```{r}
+library(tidyverse)
+library(socviz)
+
+# Load data
+election_panel <- read_csv(
+  "https://bcdanl.github.io/data/election_panel_2000_2024.csv"
+)
+
+# Pick a year (example: 2020)
+df <- election_panel %>%
+  filter(year == 2020)
+
+# Join to county map
+county_df <- county_map %>%
+  left_join(df, by = c("id" = "fips"))
+
+# Your required colors:
+# White → "#FFFFFF"
+# Dark blue → "#211f82"
+# Grey80 → "grey80"
+# Light blue → "#81ABD9"
+
+# Build a 4‑color continuous gradient
+my_gradient <- c("#FFFFFF", "#81ABD9", "grey80", "#211f82")
+
+ggplot(county_df, aes(long, lat, group = group, fill = pct_dem)) +
+  geom_polygon(color = "white", size = 0.1) +
+  scale_fill_gradientn(
+    colors = my_gradient,
+    na.value = "#FFFFFF",
+    name = "Percent Democrat"
+  ) +
+  labs(
+    title = "U.S. Presidential Election: Percent Democratic Vote",
+    subtitle = "County-level results"
+  ) +
+  theme_void() +
+  theme(
+    legend.position = "bottom",
+    plot.title = element_text(size = 16, face = "bold")
+  )
+
+```
+
+```{r}
+library(tidyverse)
+library(socviz)
+
+# Load data
+election_panel <- read_csv(
+  "https://bcdanl.github.io/data/election_panel_2000_2024.csv"
+)
+
+# Build dataset for all years
+df <- election_panel %>%
+  filter(year %in% c(2000, 2004, 2008, 2012, 2016, 2020, 2024))
+
+# Join to county map
+county_df <- county_map %>%
+  left_join(df, by = c("id" = "fips"))
+
+# Your required 4-color continuous gradient
+my_gradient <- c("#FFFFFF", "#81ABD9", "grey80", "#211f82")
+
+# Compute quartiles for legend ticks
+q <- quantile(county_df$pct_dem, probs = c(.25, .5, .75), na.rm = TRUE)
+
+ggplot(county_df, aes(long, lat, group = group, fill = pct_dem)) +
+  geom_polygon(color = "white", size = 0.05) +
+  scale_fill_gradientn(
+    colors = my_gradient,
+    na.value = "#FFFFFF",
+    name = "Percent Democrat",
+    limits = range(county_df$pct_dem, na.rm = TRUE),
+    breaks = c(min(county_df$pct_dem, na.rm = TRUE), q, max(county_df$pct_dem, na.rm = TRUE)),
+    labels = scales::number_format(accuracy = 0.1)
+  ) +
+  facet_wrap(~ year, ncol = 4) +
+  labs(
+    title = "U.S. Presidential Elections, 2000–2024",
+    subtitle = "Votes toward Democratic Presidential Candidates"
+  ) +
+  theme_void() +
+  theme(
+    strip.text = element_text(size = 12, face = "bold"),
+    plot.title = element_text(size = 18, face = "bold"),
+    plot.subtitle = element_text(size = 13),
+    legend.position = "bottom",
+    legend.key.width = unit(2, "cm")
+  )
+
+
+```
+
+library(tidyverse) library(socviz)
+
+# Load data
+
+election_panel \<- read_csv( "[https://bcdanl.github.io/data/election_panel_2000_2024.csv"](https://bcdanl.github.io/data/election_panel_2000_2024.csv%22) )
+
+# Build dataset for all years
+
+df \<- election_panel %\>% filter(year %in% c(2000, 2004, 2008, 2012, 2016, 2020, 2024))
+
+# Join to county map
+
+county_df \<- county_map %\>% left_join(df, by = c("id" = "fips"))
+
+# Your required 4-color continuous gradient
+
+my_gradient \<- c("#FFFFFF", "#81ABD9", "grey80", "#211f82")
+
+# Compute quartiles for legend ticks
+
+q \<- quantile(county_df\$pct_dem, probs = c(.25, .5, .75), na.rm = TRUE)
+
+ggplot(county_df, aes(long, lat, group = group, fill = pct_dem)) + geom_polygon(color = "white", size = 0.05) + scale_fill_gradientn( colors = my_gradient, na.value = "#FFFFFF", name = "Percent Democrat", limits = range(county_df$pct_dem, na.rm = TRUE),
+    breaks = c(min(county_df$pct_dem, na.rm = TRUE), q, max(county_df\$pct_dem, na.rm = TRUE)), labels = scales::number_format(accuracy = 0.1) ) + facet_wrap(\~ year, ncol = 4) + labs( title = "U.S. Presidential Elections, 2000–2024", subtitle = "Votes toward Democratic Presidential Candidates" ) + theme_void() + theme( strip.text = element_text(size = 12, face = "bold"), plot.title = element_text(size = 18, face = "bold"), plot.subtitle = element_text(size = 13), legend.position = "bottom", legend.key.width = unit(2, "cm") )
+
+```{r}
+library(tidyverse)
+library(socviz)
+
+# Load data
+election_panel <- read_csv(
+  "https://bcdanl.github.io/data/election_panel_2000_2024.csv"
+)
+
+county_map <- socviz::county_map
+
+
+
+# Compute summary stats for legend
+break_vals <- quantile(
+  map_data$pct_DEMOCRAT,
+  probs = c(0, 0.25, 0.5, 0.75, 1),
+  na.rm = TRUE
+)
+
+# Labels like the example
+break_labels <- c(
+  paste0(round(break_vals[1], 1), "\n(Min)"),
+  paste0(round(break_vals[2], 1), "\n(25th)"),
+  paste0(round(break_vals[3], 1), "\n(Median)"),
+  paste0(round(break_vals[4], 1), "\n(75th)"),
+  paste0(round(break_vals[5], 1), "\n(Max)")
+)
+
+# Plot
+ggplot(map_data, aes(long, lat, group = group, fill = pct_DEMOCRAT)) +
+  geom_polygon(color = NA) +
+  
+  facet_wrap(~year, ncol = 3) +
+  
+  scale_fill_gradientn(
+    colors = c("#FFFFFF", "#211f82", "grey80", "#81ABD9"),
+    breaks = break_vals,
+    labels = break_labels,
+    name = "Percent\nDemocrat",
+    na.value = "grey80"
+  ) +
+  
+  coord_quickmap() +
+  
+  labs(
+    title = "U.S. Presidential Elections, 2000–2024",
+    subtitle = "Votes toward Democratic Presidential Candidates"
+  ) +
+  
+  theme_void() +
+  theme(
+    strip.text = element_text(face = "bold", size = 12),
+    plot.title = element_text(face = "bold", size = 16),
+    plot.subtitle = element_text(size = 12),
+    legend.position = "bottom",
+    legend.key.width = unit(2, "cm")
+  )
+```

@@ -1,0 +1,24 @@
+---
+title: "310-Class-3-25-26"
+editor: visual
+jupyter: python3
+---
+
+```{r}
+install.packages("ggrepel")
+library(ggrepel)
+```
+
+install.packages("ggrepel") library(ggrepel)
+
+```         
+
+install.packages("ggrepel") library(ggrepel)
+```
+
+```         
+ev <- read_csv("https://bcdanl.github.io/data/electric_vehicles_WA.csv")
+
+ev |> 
+  paged_table()
+```

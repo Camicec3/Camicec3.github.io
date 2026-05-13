@@ -1,0 +1,26 @@
+---
+title: "Dashing though the snow"
+author: Cameron Caffarelli
+format: dashboard
+---
+
+
+```{r}
+library(tidyverse)
+library(gapminder)
+# install.packages(c("shiny", "rsconnect", "plotly", "DT", "viridis"))
+```
+
+<!-- echo "\# shiny-00-old-faithful." \>\> README.md git init git add README.md git commit -m "first commit" git branch -M main git remote add origin <https://github.com/Camicec3/shiny-00-old-faithful..git> git push -u origin main -->
+
+
+```{r}
+gapminder |> 
+  ggplot(aes(x = gdpPercap,
+             y = lifeExp)) +
+  geom_point()
+```
+
+
+
+

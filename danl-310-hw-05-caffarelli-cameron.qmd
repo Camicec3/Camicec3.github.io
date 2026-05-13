@@ -1,0 +1,127 @@
+---
+title: "U.S. Presidential Elections, 2000–2024"
+author: "cameron caffarelli"
+editor: visual
+format: html
+warning: false
+message: false
+---
+
+```{r}
+# Load libraries
+library(tidyverse)
+library(sf)
+library(socviz)
+library(scales)
+
+# Load election data
+election_panel <- read_csv(
+  "https://bcdanl.github.io/data/election_panel_2000_2024.csv"
+)
+
+# Load county geometries
+counties <- socviz::county_map 
+
+# Join election data to map
+map_data <- counties |>
+  left_join(election_panel, by = c("id" = "id"))
+
+# Plot
+ggplot(map_data) +
+  geom_polygon(aes(x= long, y = lat,
+                   fill = pct_DEMOCRAT), color = NA) +
+  
+  facet_wrap(~year, ncol = 3) +
+  
+  scale_fill_gradientn(
+    colors = c("#FFFFFF", "grey80", "#81ABD9", "#211f82"),
+    values = scales::rescale(c(0, 0.25, 0.5, 1)),
+    name = "Percent Democrat",
+    labels = percent_format(scale = 1)
+  ) +
+  
+  labs(
+    title = "U.S. Presidential Elections, 2000–2024",
+    subtitle = "Votes toward Democratic Presidential Candidates"
+  ) +
+  
+  theme_void() +
+  
+  theme(
+    strip.background = element_rect(fill = "#6C8EBF", color = NA),
+    strip.text = element_text(color = "black", face = "bold"),
+    
+    plot.title = element_text(size = 18, face = "bold"),
+    plot.subtitle = element_text(size = 12),
+    
+    legend.position = "bottom"
+  )
+
+```
+
+```{r}
+# Load libraries
+library(tidyverse)
+library(sf)
+library(tigris)
+library(viridis)
+library(scales)
+
+# Get income data
+ny_income <- read_csv("https://bcdanl.github.io/data/NY_pinc_wide.csv")
+
+# Get NY county geometries
+ny_counties_sf <- counties(state = "NY", year = 2024, cb = TRUE) |>
+  st_as_sf()
+
+# Convert wide -> long format
+ny_income_long <- ny_income |>
+  pivot_longer(
+    cols = starts_with("pincp"),
+    names_to = "year",
+    values_to = "income"
+  ) |>
+  mutate(
+    year = as.numeric(str_remove(year, "pincp"))
+  )
+
+# Keep only 2019–2024
+ny_recent <- ny_income_long |>
+  filter(year >= 2019)
+
+# Join data to map
+map_data <- ny_counties_sf |>
+  mutate(fips = as.numeric(GEOID)) |>
+  left_join(ny_recent, by = "fips")
+
+# Titles
+p_title <- "Personal Income by County in New York"
+p_caption <- "Source: U.S. Bureau of Economic Analysis (https://www.bea.gov/data/income-saving/personal-income-by-county)"
+
+# Plot
+ggplot(map_data) +
+  geom_sf(aes(fill = income), color = "white", size = 0.2) +
+  
+  facet_wrap(~year, ncol = 3) +
+  
+  scale_fill_viridis_c(
+    trans = "log10",
+    name = "Income\n(log-10 scale)",
+    labels = dollar_format()
+  ) +
+  
+  labs(
+    title = p_title,
+    caption = p_caption
+  ) +
+  
+  theme_void() +
+  
+  theme(
+    plot.title = element_text(size = 16, face = "bold"),
+    strip.text = element_text(face = "bold"),
+    legend.position = "right"
+  )
+```
+
+I used AI when I got stuck.

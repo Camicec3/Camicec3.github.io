@@ -1,0 +1,329 @@
+---
+title: "Weekend vs. Weekday Airbnb Prices Across Europe"
+subtitle: "A data storytelling project using short-term rental listings from ten major European cities"
+author: "Cameron Caffarelli"
+date: "May 2026"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    code-fold: true
+    code-tools: true
+    theme: cosmo
+    embed-resources: true
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+## Introduction
+
+Travel costs are one of the biggest factors people consider when choosing where and when to visit a city. Short-term rentals, such as Airbnb listings, can vary widely depending on the destination, the type of room, and whether the stay happens during the week or over the weekend. This project explores Airbnb-style listings from ten major European cities to understand how prices differ across places and between weekday and weekend stays.
+
+The main question guiding this project is:
+
+> **How do Airbnb prices differ between weekdays and weekends across major European cities, and which cities appear to offer the best value for travelers?**
+
+This question is useful because travelers often make decisions based on both destination and timing. A city that looks affordable during the week may become more expensive on the weekend, while another city may remain relatively stable. By comparing cities and day types, this project tells a story about where travelers may face the highest prices and where they may find more affordable stays.
+
+## Data
+
+The dataset contains Airbnb-style listing information for ten European cities:
+
+- Amsterdam
+- Athens
+- Barcelona
+- Berlin
+- Budapest
+- Lisbon
+- London
+- Paris
+- Rome
+- Vienna
+
+Each city has two CSV files: one for weekday listings and one for weekend listings. The original files are combined into one dataset so that the cities and day types can be compared directly.
+
+Important variables used in this project include:
+
+- `realSum`: total listing price
+- `room_type`: type of rental room
+- `person_capacity`: number of guests the listing can hold
+- `host_is_superhost`: whether the host is a superhost
+- `cleanliness_rating`: cleanliness score
+- `guest_satisfaction_overall`: overall guest satisfaction score
+- `bedrooms`: number of bedrooms
+- `dist`: distance from the city center
+- `metro_dist`: distance from the nearest metro station
+- `city`: city name added during data transformation
+- `day_type`: weekday or weekend, added during data transformation
+
+```{r}
+# Load packages
+library(tidyverse)
+library(scales)
+library(knitr)
+library(rmarkdown)
+```
+
+```{r}
+# Optional: unzip the uploaded data archive if the CSV files are not already available.
+# Place archive (5).zip in the same folder as this QMD file before rendering.
+if (!dir.exists("data")) {
+  dir.create("data")
+}
+
+if (length(list.files("data", pattern = "\\.csv$")) == 0 && file.exists("archive (5).zip")) {
+  unzip("archive (5).zip", exdir = "data")
+}
+
+# Read and combine all CSV files
+csv_files <- list.files("data", pattern = "\\.csv$", full.names = TRUE)
+
+airbnb <- csv_files |>
+  map_dfr(function(file) {
+    file_name <- basename(file)
+    city_name <- str_extract(file_name, "^[^_]+") |> str_to_title()
+    day_name <- case_when(
+      str_detect(file_name, "weekdays") ~ "Weekday",
+      str_detect(file_name, "weekends") ~ "Weekend",
+      TRUE ~ NA_character_
+    )
+    
+    read_csv(file, show_col_types = FALSE) |>
+      mutate(
+        city = city_name,
+        day_type = day_name
+      )
+  }) |>
+  select(-starts_with("Unnamed")) |>
+  mutate(
+    city = factor(city),
+    day_type = factor(day_type, levels = c("Weekday", "Weekend")),
+    room_type = factor(room_type),
+    host_is_superhost = factor(host_is_superhost)
+  )
+
+paged_table(airbnb)
+```
+
+## Data Transformation and Descriptive Statistics
+
+The original files were stored separately by city and day type, so the first major transformation was combining all twenty CSV files into one dataset. A `city` column was created from the file name, and a `day_type` column was created to identify whether each listing came from a weekday or weekend file. This makes it possible to compare listing prices across both geography and timing.
+
+```{r}
+# Overall structure of the combined dataset
+glimpse(airbnb)
+```
+
+```{r}
+# Number of listings by city and day type
+listing_counts <- airbnb |>
+  count(city, day_type, name = "listings") |>
+  arrange(city, day_type)
+
+kable(listing_counts, caption = "Number of listings by city and day type")
+```
+
+```{r}
+# Main summary table for price and guest satisfaction
+city_day_summary <- airbnb |>
+  group_by(city, day_type) |>
+  summarize(
+    listings = n(),
+    average_price = mean(realSum, na.rm = TRUE),
+    median_price = median(realSum, na.rm = TRUE),
+    average_satisfaction = mean(guest_satisfaction_overall, na.rm = TRUE),
+    average_cleanliness = mean(cleanliness_rating, na.rm = TRUE),
+    average_distance_center = mean(dist, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  arrange(desc(average_price))
+
+kable(
+  city_day_summary |>
+    mutate(across(where(is.numeric), ~ round(.x, 2))),
+  caption = "Descriptive statistics by city and day type"
+)
+```
+
+```{r}
+# Weekend premium table
+weekend_premium <- city_day_summary |>
+  select(city, day_type, average_price) |>
+  pivot_wider(names_from = day_type, values_from = average_price) |>
+  mutate(
+    weekend_premium = Weekend - Weekday,
+    percent_change = weekend_premium / Weekday
+  ) |>
+  arrange(desc(weekend_premium))
+
+kable(
+  weekend_premium |>
+    mutate(
+      Weekday = round(Weekday, 2),
+      Weekend = round(Weekend, 2),
+      weekend_premium = round(weekend_premium, 2),
+      percent_change = percent(percent_change, accuracy = 0.1)
+    ),
+  caption = "Average weekend price premium by city"
+)
+```
+
+The descriptive statistics show that Amsterdam is the most expensive city in the dataset, with average prices above 500 during the week and above 600 on weekends. Paris and London are also high-price cities, while Athens and Budapest are the most affordable overall. The weekend premium is not the same in every city. Amsterdam has the largest increase in average price from weekday to weekend, while Budapest also shows a noticeable weekend increase. Athens and Paris actually have slightly lower average prices on weekends than weekdays in this dataset, showing that weekend travel is not automatically more expensive everywhere.
+
+## Data Visualization and Storytelling
+
+### Average price by city and day type
+
+```{r}
+ggplot(city_day_summary, aes(x = reorder(city, average_price), y = average_price, fill = day_type)) +
+  geom_col(position = "dodge") +
+  coord_flip() +
+  scale_y_continuous(labels = dollar_format(prefix = "€")) +
+  labs(
+    title = "Amsterdam, Paris, and London Have the Highest Average Listing Prices",
+    subtitle = "Average Airbnb-style listing price by city and weekday/weekend status",
+    x = NULL,
+    y = "Average listing price",
+    fill = "Day type"
+  ) +
+  theme_minimal()
+```
+
+This chart shows that price differences across cities are much larger than the difference between weekdays and weekends within most cities. Amsterdam stands out as the most expensive city in the dataset, especially on weekends. Paris and London also have high average prices, while Athens and Budapest are much cheaper. This suggests that destination choice may matter more than timing for travelers trying to control lodging costs.
+
+### Weekend price premium
+
+```{r}
+ggplot(weekend_premium, aes(x = reorder(city, weekend_premium), y = weekend_premium)) +
+  geom_col() +
+  coord_flip() +
+  geom_hline(yintercept = 0, linewidth = 0.8) +
+  scale_y_continuous(labels = dollar_format(prefix = "€")) +
+  labs(
+    title = "Weekend Price Changes Are Uneven Across European Cities",
+    subtitle = "Positive values mean weekends are more expensive than weekdays",
+    x = NULL,
+    y = "Weekend premium"
+  ) +
+  theme_minimal()
+```
+
+The weekend premium chart makes the timing story clearer. Amsterdam has the largest weekend increase, meaning travelers visiting Amsterdam may save money by avoiding weekend stays. Budapest also has a relatively large weekend premium compared with its lower overall price level. However, cities such as London, Lisbon, Vienna, Berlin, Barcelona, and Rome show smaller weekend changes. Athens and Paris show negative weekend premiums, meaning their weekend average prices are lower than their weekday average prices in this dataset.
+
+### Price distributions by city
+
+```{r}
+ggplot(airbnb, aes(x = city, y = realSum)) +
+  geom_boxplot(outlier.alpha = 0.15) +
+  coord_flip() +
+  scale_y_continuous(labels = dollar_format(prefix = "€")) +
+  labs(
+    title = "Listing Prices Are Right-Skewed, Especially in Expensive Cities",
+    subtitle = "Boxplots show medians, spread, and high-price outliers",
+    x = NULL,
+    y = "Listing price"
+  ) +
+  theme_minimal()
+```
+
+The boxplot shows that listing prices are not evenly distributed. Most cities have many listings clustered around lower and middle prices, but they also contain expensive outliers. This is especially visible in Amsterdam, London, and Paris. Because of these high-price listings, the average price can be pulled upward, which is why median price is also useful when describing typical traveler costs.
+
+### Room type and price
+
+```{r}
+room_summary <- airbnb |>
+  group_by(room_type) |>
+  summarize(
+    listings = n(),
+    average_price = mean(realSum, na.rm = TRUE),
+    median_price = median(realSum, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  arrange(desc(average_price))
+
+kable(
+  room_summary |>
+    mutate(across(where(is.numeric), ~ round(.x, 2))),
+  caption = "Price summary by room type"
+)
+```
+
+```{r}
+ggplot(airbnb, aes(x = room_type, y = realSum)) +
+  geom_boxplot(outlier.alpha = 0.1) +
+  scale_y_continuous(labels = dollar_format(prefix = "€")) +
+  labs(
+    title = "Entire Homes and Apartments Are the Most Expensive Room Type",
+    subtitle = "Private rooms and shared rooms are generally more affordable options",
+    x = "Room type",
+    y = "Listing price"
+  ) +
+  theme_minimal()
+```
+
+Room type is another major part of the story. Entire homes and apartments have the highest average prices, while private rooms and shared rooms are more affordable. This matters because city-level price comparisons may partly reflect the mix of room types available in each city. A traveler looking for the lowest-cost stay may find that choosing a private room changes the affordability of an otherwise expensive destination.
+
+### Guest satisfaction compared with price
+
+```{r}
+city_summary <- airbnb |>
+  group_by(city) |>
+  summarize(
+    average_price = mean(realSum, na.rm = TRUE),
+    median_price = median(realSum, na.rm = TRUE),
+    average_satisfaction = mean(guest_satisfaction_overall, na.rm = TRUE),
+    listings = n(),
+    .groups = "drop"
+  )
+
+kable(
+  city_summary |>
+    arrange(desc(average_price)) |>
+    mutate(across(where(is.numeric), ~ round(.x, 2))),
+  caption = "Overall city summary"
+)
+```
+
+```{r}
+ggplot(city_summary, aes(x = average_price, y = average_satisfaction, label = city, size = listings)) +
+  geom_point(alpha = 0.7) +
+  geom_text(nudge_y = 0.15, check_overlap = TRUE) +
+  scale_x_continuous(labels = dollar_format(prefix = "€")) +
+  scale_size_continuous(labels = comma) +
+  labs(
+    title = "Higher Prices Do Not Always Mean Higher Guest Satisfaction",
+    subtitle = "Average price and guest satisfaction by city",
+    x = "Average listing price",
+    y = "Average guest satisfaction",
+    size = "Listings"
+  ) +
+  theme_minimal()
+```
+
+The price and satisfaction comparison shows that higher prices do not automatically lead to higher guest satisfaction. Athens has one of the lowest average prices but one of the highest average satisfaction scores. London has one of the highest average prices but the lowest average satisfaction score among the cities in this dataset. This is important for the project story because the best value is not simply the cheapest listing or the most expensive destination. A strong value city combines lower prices with strong guest satisfaction.
+
+## Key Findings
+
+The main findings from this project are:
+
+1. **Amsterdam is the most expensive city overall.** It has the highest average weekday and weekend prices, and it also has the largest weekend price increase.
+
+2. **Athens and Budapest are the most affordable cities.** These cities have much lower average prices than Amsterdam, Paris, and London.
+
+3. **Weekend pricing patterns differ by city.** Some cities become more expensive on weekends, especially Amsterdam and Budapest, while Athens and Paris have slightly lower average weekend prices in this dataset.
+
+4. **Room type strongly affects price.** Entire homes and apartments are much more expensive than private rooms and shared rooms.
+
+5. **Higher price does not guarantee higher satisfaction.** Athens is relatively affordable but has very high guest satisfaction, while London is expensive and has lower average satisfaction.
+
+## Conclusion
+
+This project shows that Airbnb prices across Europe are shaped by both destination and timing, but destination appears to be the larger factor. Amsterdam, Paris, and London are the most expensive cities, while Athens and Budapest are the most affordable. Weekend prices are not universally higher across all cities, although Amsterdam has a clear weekend premium. The data also shows that travelers should consider room type and guest satisfaction, not just average price.
+
+The strongest travel value in this dataset appears to come from cities such as Athens and Budapest because they combine lower prices with strong guest satisfaction. For travelers trying to reduce costs, avoiding expensive weekend stays in Amsterdam may be especially important. Overall, the data tells a clear story: where a traveler stays matters more than whether they travel on a weekday or weekend, but timing can still make a meaningful difference in certain cities.
+
+## References
+
+Airbnb-style European city listing data provided as course project data. Variables include listing price, room type, location, host information, cleanliness ratings, guest satisfaction, and distance measures.

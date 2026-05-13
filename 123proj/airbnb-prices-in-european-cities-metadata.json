@@ -1,0 +1,7 @@
+```{r}
+import kagglehub
+
+# Download latest version
+path = kagglehub.dataset_download("thedevastator/airbnb-prices-in-european-cities")
+
+print("Path to dataset files:", path)
