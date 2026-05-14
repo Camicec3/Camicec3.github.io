@@ -162,18 +162,30 @@ cleaned_fara |>
 
 
 # Empirical Strategy / Methods
+## Empirical Approach
 
-Describe the method used to answer your research question. This may include regression, classification, clustering, forecasting, text analysis, or another data analytics method.
+Multiple regression models are used to examine the association between socioeconomic factors and the probability of a tract being classified as low access at the half and 10 mile threshold and the 1 and 10 mile threshold. However, the dataset has a large number of variables, many of which were highly correlated. To address this issue, Least Absolute Shrinkage and Selection Operator (Lasso) regression was used for variable selection, to shrink irrelevant and highly correlated variables to zero. The Lasso model included interaction terms between year, urban classification, and all other variables to allow Lasso to select meaningful interaction terms that allow for a more flexible analysis while keeping census tract as a fixed effect to account for tract heterogeneity. After running Lasso, the variables and interaction terms selected are used for the main regression models.  
 
-For example, a **two-way fixed effects regression** can be used as an empirical strategy for **inference** when the goal is to estimate the relationship between a key explanatory variable and an outcome while accounting for unit-specific and time-specific factors:
 
-$$
-Y_{it} = \beta_0 + \beta_1 X_{it} + \delta' Z_{it} + \alpha_i + \lambda_t + \varepsilon_{it},
-$$
+\begin{align}
+y_{it} &= \beta_0 + \beta_1 Urban_{it} + \beta_2 LowIncomeTracts_{it} + \beta_3 TractHUNV_{it} + \beta_4 TractSNAP_{it} + \beta_5 \text{PovertyRate}_{it} + \delta' Z_{it} + \varepsilon_{it} \\
 
-where $Y_{it}$ is the outcome of interest for unit $i$ at time $t$, $X_{it}$ is the main explanatory variable, $Z_{it}$ represents control variables, $\alpha_i$ captures unit fixed effects, $\lambda_t$ captures time fixed effects, and $\varepsilon_{it}$ is the error term.
+y_{it} &= \beta_0 + \beta_1 Urban_{it} + \beta_2 LowIncomeTracts_{it} + \beta_3 TractHUNV_{it} + \beta_4 TractSNAP_{it} + \beta_5 \text{PovertyRate}_{it} + \delta' Z_{it} + \alpha_i + \varepsilon_{it} \\
 
-If your project uses machine learning or prediction, explain your train/test split, cross-validation, model tuning, and performance metrics.
+y_{it} &= \beta_0 + \beta_1 Urban_{it} + \beta_2 LowIncomeTracts_{it} + \beta_3 TractHUNV_{it} + \beta_4 TractSNAP_{it} + \beta_5 \text{PovertyRate}_{it} + \delta' Z_{it} + \lambda_t + \varepsilon_{it} \\
+
+y_{it} &= \beta_0 + \beta_1 Urban_{it} + \beta_2 LowIncomeTracts_{it} + \beta_3 TractHUNV_{it} + \beta_4 TractSNAP_{it} + \beta_5 \text{PovertyRate}_{it} + \delta' Z_{it} + \alpha_i + \lambda_t + \varepsilon_{it}
+\end{align}
+
+
+where $Y_{it}$ is the outcomes `LAhalfand10` and `LA1and10` for census $i$ at time $t$, $Z_{it}$ represents control variables, $\alpha_i$ captures CensusTract fixed effects, $\lambda_t$ captures Year fixed effects, and $\varepsilon_{it}$ is the error term.
+
+The first is a pooled ordinary least squares (POLS) model, which is used as the baseline to estimate the association between socioeconomic factors and probability of being low access across all tracts and years, reflecting a combination of cross-tract differences and within-tract changes over time. This baseline model provides estimates of the relationship between tract characteristics and being labeled food access, without accounting for unobserved heterogeneity across census tracts or time. The second is a one-way CensusTract fixed effects model, which is used to control for time-invariant characteristics within specific tracts and estimate the association between those factors and being classified as low access. The third is a one-way Year fixed effect model, used to control for factors that vary over time across all census tracts. Lastly, a two-way fixed effects model controls for both CensusTract and Year, accounting for unobserved within-tract factors and time trends/shocks.
+
+## Interpretations and Identification
+
+
+
 
 # Results
 
