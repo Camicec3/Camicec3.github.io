@@ -498,3 +498,4 @@ modelsummary(
   stars = TRUE,
   coef_omit = "InterceptIntercept|TractAsian|TractHispanic|TractWhite|TractAIAN|TractKids|TractSeniors|POP2010|TractOMultir"
 )
+
