@@ -15,8 +15,8 @@ website:
           href: basic-python-intro.ipynb
         - text: Python basics with Pandas
           href: danl-210-quarto-reticulate.qmd
-      - text: Capstone Paper
-        href: danl-410-caffarelli-cameron-report.qmd
+        - text: Capstone
+          href: danl-410-caffarelli-cameron-capstone-report.qmd
       - text: Blog
         href: blog-listing.qmd
   page-footer: 
